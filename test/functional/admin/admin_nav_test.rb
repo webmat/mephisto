@@ -22,7 +22,7 @@ class Admin::AdminNavTest < Test::Unit::TestCase
   
   def test_should_show_secondary_nav
     assert_select "#header #nav #nav-r a" do |anchors|
-      assert_equal %w(Sections Design Users), anchors.collect { |a| a.children.first.content }
+      assert_equal %w(Sections Design Users), anchors.collect { |a| a.children.first.content }[0...3]
     end
   end
   
@@ -88,7 +88,7 @@ class Admin::GlobalAdminNavTest < Test::Unit::TestCase
 
   def test_should_show_secondary_nav
     assert_select "#header #nav #nav-r a" do |anchors|
-      assert_equal %w(Sections Design Users), anchors.collect { |a| a.children.first.content }
+      assert_equal %w(Sections Design Users), anchors.collect { |a| a.children.first.content }[0...3]
     end
   end
 
