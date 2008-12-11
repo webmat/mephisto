@@ -8,17 +8,18 @@ class Admin::PluginsController < Admin::BaseController
   def update
     @plugin.options = params[:options]
     @plugin.save!
-    
+    flash[:notice] = "Plugin successfully updated"
     redirect_to :action => "show", :id => params[:id]
   end
   
   def destroy
     @plugin.destroy
+    flash[:notice] = "Plugin successfully removed"
     redirect_to :action => "show", :id => params[:id]
   end
   
   protected
     def find_plugin
-      @plugin = Mephisto.plugins[params[:id]]
+      @plugin = Mephisto::Plugin[params[:id]]
     end
 end

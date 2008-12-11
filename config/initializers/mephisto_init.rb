@@ -36,5 +36,3 @@ ActiveSupport::Inflector.inflections do |inflect|
   #inflect.irregular 'person', 'people'
   inflect.uncountable %w( audio )
 end
-
-Engines::Plugin::Config.set_table_name 'mephisto_plugins'

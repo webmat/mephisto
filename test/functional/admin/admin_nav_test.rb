@@ -94,7 +94,7 @@ class Admin::GlobalAdminNavTest < Test::Unit::TestCase
 
   def test_should_show_user_nav
     assert_select "#header #sec-nav a" do |anchors|
-      assert_equal %w(Website Settings Sites Account Logout), anchors.collect { |a| a.children.first.content }
+      assert_equal %w(Website Settings Sites Plugins Account Logout), anchors.collect { |a| a.children.first.content }
     end
   end
 end
