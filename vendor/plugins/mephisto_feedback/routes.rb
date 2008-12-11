@@ -1,0 +1,1 @@
+resource :feedback, :controller => "admin/feedback"
