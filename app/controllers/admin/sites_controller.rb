@@ -1,6 +1,6 @@
 class Admin::SitesController < Admin::BaseController
 
-  before_filter :admin_required
+  before_filter :global_admin_required
   member_actions.push *%W(index show new destroy create)
   
   def index
@@ -49,14 +49,4 @@ class Admin::SitesController < Admin::BaseController
     end
   end
   
-  private
-    def admin_required
-      current_user.admin? ? true : not_allowed
-    end
-    
-    def not_allowed
-      flash[:error] = "Only global administrators can manage sites."
-      redirect_to :controller => "/account", :action => :login
-    end
-    
 end

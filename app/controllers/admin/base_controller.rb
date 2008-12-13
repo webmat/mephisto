@@ -38,4 +38,14 @@ class Admin::BaseController < ApplicationController
       options = attributes.last.is_a?(Hash) ? attributes.pop : {}
       before_filter(options) { |c| attributes.each { |attr| c.params[model][attr] = nil if c.params[model][attr] == '-' } }
     end
+    
+    def global_admin_required
+      current_user.admin? ? true : not_allowed
+    end
+
+    def not_allowed
+      flash[:error] = "Only global administrators can manage #{params[:controller]}"
+      redirect_to :controller => "/account", :action => :login
+    end    
+    
 end

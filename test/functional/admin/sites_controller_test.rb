@@ -4,26 +4,32 @@ require File.dirname(__FILE__) + '/../../test_helper'
 class Admin::SitesController; def rescue_action(e) raise e end; end
 
 class Admin::SitesControllerTest < Test::Unit::TestCase
-  fixtures :users, :sites
+  fixtures :users, :sites, :memberships
   def setup
     @controller = Admin::SitesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 
-  def test_should_allow_admin_of_sites
-    login_as :quentin
-    get :index
-    assert_response :success
-  end
-  
-  def test_should_restrict_admin_of_sites
+  def test_should_not_allow_site_admin_access_to_sites
     login_as :arthur
     get :index
     assert_redirected_to :controller => '/account', :action => 'login'
   end
+  
+  def test_should_not_allow_site_member_access_to_sites
+    login_as :ben
+    get :index
+    assert_redirected_to :controller => '/account', :action => 'login'
+  end
 
-  def test_should_allow_admin_to_view_site
+  def test_should_allow_globl_admin_access_to_sites
+    login_as :quentin
+    get :index
+    assert_response :success
+  end
+
+  def test_should_allow_global_admin_access_to_site
     login_as :quentin
     get :show, :id => sites(:hostess).id.to_s
     assert_response :success

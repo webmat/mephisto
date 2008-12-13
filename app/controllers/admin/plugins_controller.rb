@@ -1,4 +1,6 @@
 class Admin::PluginsController < Admin::BaseController
+  
+  before_filter :global_admin_required
   before_filter :find_plugin, :except => :index
 
   def index
