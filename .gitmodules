@@ -1,3 +1,0 @@
-[submodule "vendor/plugins/mephisto-plugin-generator"]
-	path = vendor/plugins/mephisto-plugin-generator
-	url = git@github.com:isaac/mephisto-plugin-generator.git
