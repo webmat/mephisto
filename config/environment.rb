@@ -21,13 +21,16 @@ require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 # fixes this problem.  Here's where I got the idea:
 # http://justbarebones.blogspot.com/2008/05/rails-202-restful-authentication-and.html
 def safe_to_load_application?
-  File.basename($0) != "rake" || !ARGV.any? {|a| a =~ /^db:/ }
+  File.basename($0) != "rake" || !ARGV.any? {|a| a =~ /^(db|gems):/ }
 end
 
 # Make sure we a site-specific secret key file.
 unless File.exists?(File.join(File.dirname(__FILE__),
                               'initializers/session_store.rb'))
-  raise "You need to run 'rake db:bootstrap:session' to create a secret key."
+  raise <<EOD
+You need to run 'rake config/initializers/session_store.rb' to create a
+secret key for encrypting session cookies.
+EOD
 end
 
 Rails::Initializer.run do |config|
@@ -62,6 +65,9 @@ Rails::Initializer.run do |config|
     config.active_record.observers = [:article_observer, :comment_observer]
   end
 
+  # Allow table tags in untrusted HTML.
+  config.action_view.sanitized_allowed_tags = ['table', 'tr', 'td']
+
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.
   config.gem 'RedCloth', :version => '3.0.4', :lib => 'redcloth'
@@ -74,6 +80,9 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'mocha'
   config.gem 'coderay'
+  config.gem 'tzinfo', :version => '>= 0.3.12'
+  config.gem 'emk-safe_erb', :version => '>= 0.1.1', :lib => 'safe_erb',
+             :source => 'http://gems.github.com'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 

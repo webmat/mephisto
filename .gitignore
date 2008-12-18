@@ -1,4 +1,6 @@
+.DS_Store
 .rake_tasks
+Capfile
 config/database.yml
 config/deploy.rb
 config/initializers/session_store.rb
@@ -8,5 +10,5 @@ public/assets
 public/cache
 public/plugin_assets
 tmp
-themes/*
+themes
 *~

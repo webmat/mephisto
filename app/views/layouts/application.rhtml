@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
-    <title><%= site.title %>: Admin <%= controller.controller_name %></title>
+    <title><%=h site.title %>: Admin <%=h controller.controller_name %></title>
     <%= stylesheet_link_tag 'mephisto/mephisto' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/dragdrop', 'mephisto/lowpro', 'mephisto/application' %>
     <script type="text/javascript">Mephisto.root = '<%= relative_url_root %>'; <%= init_mephisto_authenticity_token %></script>
@@ -26,10 +26,10 @@
 			<% end %>
         <li><%= link_to 'Account', :controller => 'users', :action => 'show', :id => current_user %></li>
 
-        <li><%= link_to 'Logout', :controller => '/account', :action => 'logout' %></li>
+        <li><%= link_to 'Logout', { :controller => '/account', :action => 'logout' }, :method => :post %></li>
       </ul>
 
-      <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
+      <h1><%= link_to "#{h site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
 
       <!-- div.nav -->  
       <div id="nav">
@@ -79,8 +79,8 @@
         <!-- div.left -->
         <div id="main">
           <div id="flashes">
-            <div id="flash-errors" style="display: none;"><%= flash[:error] %></div>
-            <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
+            <div id="flash-errors" style="display: none;"><%=h flash[:error] %></div>
+            <div id="flash-notice" style="display:none"><%=h flash[:notice] %></div>
           </div>
           <!-- begin action nav -->
           <%= yield :action_nav %>

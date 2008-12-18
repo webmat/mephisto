@@ -214,10 +214,13 @@ class Site < ActiveRecord::Base
   end
 
   composed_of :timezone, :class_name => 'TZInfo::Timezone', :mapping => %w(timezone name)
-  alias original_timezone_writer timezone=
-  def timezone=(name)
-    name = TZInfo::Timezone.new(name) unless name.is_a?(TZInfo::Timezone)
-    original_timezone_writer(name)
+
+  def timezone_name
+    timezone.name
+  end
+
+  def timezone_name= name
+    self.timezone = TZInfo::Timezone.new(name)
   end
 
   def page_cache_directory
@@ -281,7 +284,7 @@ class Site < ActiveRecord::Base
       self.search_path     = 'search' if search_path.blank?
       self.tag_path        = 'tags'   if tag_path.blank?
       [:permalink_style, :search_path, :tag_path].each { |a| send(a).downcase! }
-      self.timezone = 'UTC' if read_attribute(:timezone).blank?
+      self.timezone_name = 'UTC' if read_attribute(:timezone).blank?
       if new_record?
         self.approve_comments = false unless approve_comments?
         self.comment_age      = 30    unless comment_age
@@ -320,7 +323,7 @@ class Site < ActiveRecord::Base
       begin
         current_theme_path = self.theme_path + "simpla"
         FileUtils.mkdir_p(self.theme_path)
-        FileUtils.cp_r("#{RAILS_ROOT}/themes/default", current_theme_path)
+        FileUtils.cp_r("#{RAILS_ROOT}/app/themes/default", current_theme_path)
         Dir[File.join(current_theme_path, '**/.svn')].each do |dir|
           FileUtils.rm_rf dir
         end

@@ -2,9 +2,9 @@ This is a list of issues that we need to fix before making a Mephisto
 release based on Rails 2.2.
 
 / Try to upgrade to gem version of coderay
-  Make sure both old- and new-style plugins work
-  Security audit--see blow
-  Drop TZInfo completely--see app/models/site.rb (fix docs, too)
+/ Fix TZInfo to work again
+  Make sure we know what's up with plugins
+  Security audit--see below
   We need to review our TODO comments
 
 == Security
@@ -12,11 +12,10 @@ release based on Rails 2.2.
 We need to do a basic security audit.
 
   Cookies
-    Make sure cookies are HTTP-only whenever possible
-    Can we restrict admin cookies to /admin ?
-    Make sure logging out clears all relevant cookies and tokens
-    Check for session fixation attacks
-    Expire sessions after a while?
+X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
+/   Make sure logging out clears all relevant cookies and tokens
+/   Check for session fixation attacks
+/   Make sure cookies are HTTP-only whenever possible
   Cross-site scripting
 /   Turn on protect_against_forgery
     Check all fields in comments
@@ -24,23 +23,42 @@ We need to do a basic security audit.
     Check macro:* bodies and parameters
       filtered_column_code_macro
       filtered_column_flikr_macro
-    Do we have trackback support to check?
-    Do we need to upgrade to an industrial-strength HTML sanitizer?
-    For now, we'll assume that users with access to /admin don't try XSS
+/   Do we have trackback support to check? No.
   Password change
-    Make change-password forms safe against CSRF
-    Require the user to enter the old password when changing it
-    Require password to change e-mail address
+    Verify token required to change e-mail and password
   Everything else
 /   Don't ship :session_key in environment.rb!
-    Do we need to override verifiable_request_format?
+/   Do we need to override verifiable_request_format? No.
+    Check redirection in lib/authenticated_system.rb
+    Detect mass assignment failures in unit tests
     Review mass assignment in public controllers
-    Review http://guides.rubyonrails.org/security.html
-    Can we use SafeERB?
+    Check regexes for ^ and $
+    Review http://guides.rubyonrails.org/security.html again
 
   Admin only
+    For now, we'll assume that users with access to /admin don't try XSS
     Filter file names for uploads
     Review mass assignment in admin controllers
+
+  Later
+    Improve password changing
+    Can we use SafeERB for Liquid templates?
+    Expire sessions after a while?
+    Do we need to upgrade to an industrial-strength HTML sanitizer?
+    Require the user to enter the old password when changing it
+      This will break our password reset system, actually
+    Require password to change e-mail address?
+
+== Mass assignment protection
+
+# We need to modify this and put somewhere appropriate.
+ActiveRecord::Base.class_eval do
+  # Raise an error if mass-assignment occurs during unit tests.  Taken from:
+  # http://almosteffortless.com/2008/11/27/raising-protected-attribute-assignme
+  def log_protected_attribute_removal(*attributes)
+    raise "Can't mass-assign these protected attributes: #{attributes.join(', '
+  end
+end
 
 == After next release
 
