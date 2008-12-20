@@ -3,42 +3,50 @@ release based on Rails 2.2.
 
 / Try to upgrade to gem version of coderay
 / Fix TZInfo to work again
+/ Security audit--see below
+  Fix script/generate
   Make sure we know what's up with plugins
-  Security audit--see below
   We need to review our TODO comments
 
 == Security
 
 We need to do a basic security audit.
 
-  Cookies
+/ Cookies
 X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Make sure logging out clears all relevant cookies and tokens
 /   Check for session fixation attacks
 /   Make sure cookies are HTTP-only whenever possible
-  Cross-site scripting
+/ Cross-site scripting
 /   Turn on protect_against_forgery
-    Check all fields in comments
-      It looks like the failed comment error form has issues
-    Check macro:* bodies and parameters
-      filtered_column_code_macro
-      filtered_column_flikr_macro
+/   Check all fields in comments
+/     It looks like the failed comment error form has issues
+/     Fix comment submission form to not use mass assignment
+/   Check macro:* bodies and parameters
+/     Make sure comment output is properly sanitized in any case
+/     filtered_column_code_macro
+/     filtered_column_flikr_macro - lots of issues
 /   Do we have trackback support to check? No.
-  Password change
-    Verify token required to change e-mail and password
-  Everything else
+/ Password change
+/   Verify token required to change e-mail and password
+/ Everything else
 /   Don't ship :session_key in environment.rb!
 /   Do we need to override verifiable_request_format? No.
-    Check redirection in lib/authenticated_system.rb
-    Detect mass assignment failures in unit tests
-    Review mass assignment in public controllers
-    Check regexes for ^ and $
-    Review http://guides.rubyonrails.org/security.html again
+/   Check redirection in lib/authenticated_system.rb
+/   Review mass assignment in public controllers - comments
+/   Check regexes for ^ and $
+/   Filter IMG tags
+/   Block database updates on POST requests
+/   Review http://guides.rubyonrails.org/security.html again
 
   Admin only
     For now, we'll assume that users with access to /admin don't try XSS
     Filter file names for uploads
+    Can we block file uploads into public?  What about caching?
     Review mass assignment in admin controllers
+    Only allow global admin functions on site 1 (or admin domain?)
+    Can we isolate articles, etc., from admin to prevent XSS?
+    Review http://guides.rubyonrails.org/security.html another time
 
   Later
     Improve password changing
@@ -46,8 +54,9 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
     Expire sessions after a while?
     Do we need to upgrade to an industrial-strength HTML sanitizer?
     Require the user to enter the old password when changing it
-      This will break our password reset system, actually
+      This will break our password reset system--need a major fix
     Require password to change e-mail address?
+    Detect mass assignment failures in unit tests - not really security issue
 
 == Mass assignment protection
 

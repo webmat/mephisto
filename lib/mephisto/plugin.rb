@@ -99,7 +99,6 @@ module Mephisto
         custom_routes << args
       end
 
-
       # Keeps track of custom adminstration tabs.  Each item is an array of arguments to be passed to link_to.
       #
       #   module Mephisto
