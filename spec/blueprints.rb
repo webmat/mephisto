@@ -30,7 +30,7 @@ User.blueprint do
   token            { 'quentintoken' }
   admin            { false }
   salt             { '7e3041ebc2fc05a40c60028e2c4901a81035d3cd' }
-  crypted_password { '00742970dc9e6319f8019fd54864d3ea740f04b1' }
+  crypted_password { '00742970dc9e6319f8019fd54864d3ea740f04b1' } # test
 end
 
 Membership.blueprint do
@@ -61,4 +61,28 @@ end
 
 Tag.blueprint do
   name         { Sham.tag }
+end
+
+Event.class_eval do
+  blueprint do
+    site
+    mode       { 'publish' } # or 'edit', 'comment'
+    title      { Sham.title }
+    body       { Sham.body }
+    created_at { Time.now - 3.days }
+    # These can be nil, depending on the type of comment
+    # author
+    # comment
+    # user 
+  end
+
+  def self.make_from(record)
+    options = {:title => record.title, :body => record.body, :site => record.site, :mode => Event.mode_from(record)}
+    if record.is_a?(Comment)
+      options.update :article => record.article, :comment => record, :author => record.author
+    else
+      options.update :article => record, :user => record.updater || record.user
+    end
+    Event.make(options)
+  end
 end
