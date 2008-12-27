@@ -94,6 +94,8 @@ Rails::Initializer.run do |config|
   config.gem 'nokogiri', :version => '>= 1.1.0' # Used by webrat.
   config.gem 'brynary-webrat', :version => '>= 0.3.2.2', :lib => 'webrat',
              :source => 'http://gems.github.com'
+  config.gem 'selenium-client', :version => '>= 1.2.9', :lib => false
+  config.gem 'cucumber', :version => '>= 0.1.13'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
