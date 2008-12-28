@@ -1,4 +1,7 @@
 Feature: Logging in and out
+  In order to preserve my good reputation
+  As the owner of a Mephisto site
+  I want to keep random strangers from administering my site
   
   Scenario: Log in with valid name and password
     Given a site
