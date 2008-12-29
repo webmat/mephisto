@@ -11,5 +11,16 @@ require 'webrat/rails'
 require 'cucumber/rails/rspec'
 require 'webrat/rspec-rails'
 
+if false
+  require "webrat/selenium"
+  World do
+    Webrat::Selenium::Rails::World.new
+  end
+  Before do
+    Site.delete_all
+    User.delete_all
+  end
+end
+
 require 'machinist'
 require File.join(File.dirname(__FILE__), '../../spec/blueprints')

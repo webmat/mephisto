@@ -3,6 +3,6 @@ Given /I try to access the overview page/ do
 end
 
 Then /I should see the overview page/ do
-  Then "I should see \"Create new article\""
-  And "I should see \"Recent activity\""
+  response.should contain("Create new article")
+  response.should contain("Recent activity")
 end

@@ -20,7 +20,7 @@ Then /^I should not be able to log in as "(.*)" with password "(.*)"$/ do
     |login, password|
   When "I try to access the overview page"
   And  "I log in as \"#{login}\" with password \"#{password}\""
-  Then "I should see \"Could not log you in.\""
+  response.should contain("Could not log you in.")
 end
 
 Then /^I should be logged in$/ do
@@ -30,7 +30,7 @@ end
 
 Then /^I should not be logged in$/ do
   When "I try to access the overview page"
-  Then "I should see \"Login\""
-  And  "I should see \"Password\""
+  response.should contain("Login")
+  response.should contain("Password")
 end
 

@@ -35,8 +35,7 @@ Feature: Logging in and out
     And I fill in "Password" with "newpass"
     And I fill in "Password confirmation" with "newpass"
     And I press "Save my profile"
-    Then I should see "Profile updated"
-    And I should be logged in
+    Then I should be logged in
 
     When I log out
     Then I should be able to log in as "sarah" with password "newpass"
