@@ -19,7 +19,7 @@ Site.blueprint do
   permalink_style    { ":year/:month/:day/:permalink" }
   tag_path           { 'tags' }
   search_path        { 'search' }
-  current_theme_path { 'current' }
+  current_theme_path { 'simpla' }
 end
 
 User.blueprint do

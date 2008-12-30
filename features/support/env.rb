@@ -17,6 +17,8 @@ if false
     Webrat::Selenium::Rails::World.new
   end
   Before do
+    Article.delete_all
+    Membership.delete_all
     Site.delete_all
     User.delete_all
   end
