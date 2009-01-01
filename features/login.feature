@@ -39,3 +39,9 @@ Feature: Logging in and out
 
     When I log out
     Then I should be able to log in as "sarah" with password "newpass"
+
+  Scenario: Logging out
+    Given that I am logged in as a contributor
+    And I try to access the overview page
+    When I follow "Logout"
+    Then I should not be logged in

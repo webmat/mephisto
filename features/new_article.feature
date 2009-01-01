@@ -26,3 +26,7 @@ Feature: Create a new article
     When I follow "Website"
     Then I should not see "My article"
 
+  Scenario: Searching for assets
+    Given that I am logged in as a contributor
+    And I am editing a new article
+    
